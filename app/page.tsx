@@ -31,7 +31,7 @@ export default function Home () {
           <button type="submit">Acortar</button>
         </form>
         {shortUrl && (
-          <p>URL acortada: <a href={shortUrl}>{shortUrl}</a></p>
+          <p>URL acortada: <a href={shortUrl} target='_blank' rel="noopener noreferrer">{shortUrl}</a></p>
         )}
       </main>
     </div>

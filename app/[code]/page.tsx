@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
-import { connectDB } from "../lib/dbConnection";
-import { Url } from "../models/urlSchema";
+import { findByUrlCode } from "../services/urlSvc";
+import { connectToSupabaseDb } from "../lib/database/dbConnection";
 
 type PageParam = {
 	params: {
@@ -9,14 +9,21 @@ type PageParam = {
 };
 
 export default async function Page ({ params }: PageParam) {
-	const { code } = params;
-	await connectDB();
+	const { code: urlCode } = params;
 
-	const url = await Url.findOne({ urlCode: code });
+	const supabaseConnection = connectToSupabaseDb();
+	const { data, error } = await findByUrlCode(supabaseConnection, urlCode);
 
-	if (url) {
+	if (error) {
+		console.error("Query error:", error);
+		return;
+	}
+
+	const originalUrl = data[0]?.originalUrl;
+
+	if (originalUrl) {
 		// Redirect the user to the original URL
-		redirect(url.originalUrl);
+		redirect(originalUrl);
 	}
 
 	// Show 404 if not found

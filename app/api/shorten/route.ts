@@ -1,42 +1,52 @@
-import { connectDB } from "@/app/lib/dbConnection";
-import { Url } from "@/app/models/urlSchema";
+import { connectToSupabaseDb } from "@/app/lib/database/dbConnection";
+import { findByOriginalUrl, insertNewShortUrl } from "@/app/services/urlSvc";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-	await connectDB();
+	const { longUrl: originalUrl } = await request.json();
 
-	const { longUrl } = await request.json();
-
-	if (!longUrl || !longUrl.startsWith("http")) {
+	if (!originalUrl || !originalUrl.startsWith("http")) {
 		return NextResponse.json({ error: "URL no válida" }, { status: 400 });
 	}
 
 	const urlCode = nanoid(7); // Generates a unique 7-character code
 	const shortUrl = `${request.headers.get("host")}/${urlCode}`;
 
-	try {
-		let url = await Url.findOne({ originalUrl: longUrl });
+	const supabaseConnection = connectToSupabaseDb();
 
-		if (url) {
-			return NextResponse.json(url);
-		} else {
-			url = new Url({
-				originalUrl: longUrl,
-				shortUrl,
-				urlCode,
-			});
+	const { data, error } = await findByOriginalUrl(
+		supabaseConnection,
+		originalUrl
+	);
 
-			await url.save();
-
-			return NextResponse.json(url);
-		}
-	} catch (error) {
+	if (error) {
 		console.error(error);
 
 		return NextResponse.json(
 			{ error: "Error en el servidor" },
 			{ status: 500 }
 		);
+	}
+
+	if (data?.length !== 0) {
+		return NextResponse.json(data[0]);
+	} else {
+		const { data, error } = await insertNewShortUrl(supabaseConnection, {
+			originalUrl,
+			shortUrl,
+			urlCode,
+		});
+
+		if (error) {
+			console.error(error);
+
+			return NextResponse.json(
+				{ error: "Error en el servidor" },
+				{ status: 500 }
+			);
+		}
+
+		return NextResponse.json(data[0]);
 	}
 }
