@@ -25,3 +25,20 @@ body {
 		text-wrap: balance;
 	}
 }
+
+.gradient-underline {
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	background: linear-gradient(to right, #3b82f6, #a855f7, #ec4899);
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	-webkit-background-clip: text;
+}
+
+.gradient-underline::after {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 2px; /* Adjust the thickness */
+	background: linear-gradient(to right, #3b82f6, #a855f7, #ec4899);
+}
