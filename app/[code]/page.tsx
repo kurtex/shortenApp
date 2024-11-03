@@ -1,18 +1,19 @@
 import { notFound, redirect } from "next/navigation";
 import { findByUrlCode } from "../services/urlSvc";
-import { connectToSupabaseDb } from "../lib/database/dbConnection";
+
+
+
 
 type PageParam = {
 	params: {
-		code: string
-	}
+		code: string;
+	};
 };
 
-export default async function Page ({ params }: PageParam) {
+export default async function UrlRedirection ({ params }: PageParam) {
 	const { code: urlCode } = params;
 
-	const supabaseConnection = connectToSupabaseDb();
-	const { data, error } = await findByUrlCode(supabaseConnection, urlCode);
+	const { data, error } = await findByUrlCode(urlCode);
 
 	if (error) {
 		console.error("Query error:", error);

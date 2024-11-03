@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { deleteExpiredUrls } from "../services/urlSvc";
+import { deleteExpiredUrls } from "../../services/urlSvc";
 
 // Create a cron job that runs every hour
 cron.schedule("0 * * * *", async () => {

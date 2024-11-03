@@ -2,38 +2,58 @@
 
 import { FormEvent, useState } from 'react';
 import axios from 'axios';
+import ScissorsIcon from './components/icons/ScissorsIcon';
+
 
 export default function Home () {
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
+  const [responseError, setResponseError] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/shorten", { longUrl: url });
       setShortUrl(response.data.shortUrl);
-    } catch (error) {
-      console.error("Error acortando la URL", error);
+    } catch (error: any) {
+      const errorMessage = error.response.data.error;
+      console.error("Error acortando la URL", errorMessage);
+      setResponseError(errorMessage);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center font-[family-name:var(--font-geist-sans)]">
-      <main className="flex w-1/2 h-96 flex-col items-center justify-between py-24 sm:items-center ">
-        <h1 className='flex text-5xl opacity-90 text-indigo-600'>Shorten&nbsp;<span className='gradient-underline'>URL</span></h1>
-        <form className='w-full flex flex-col items-center justify-center' onSubmit={handleSubmit}>
-          <input className='flex text-center text-indigo-700 rounded-full py-3 mb-4 w-3/4 placeholder-pink-400'
-            type="text"
-            placeholder="Insert an URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-          <button className='transition duration-300 justify-center flex text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold dark:focus:ring-blue-800 px-10 py-4 text-center me-2 mb-2 rounded-full' type="submit">Shorten</button>
-        </form>
-        {shortUrl && (
-          <p>URL acortada: <a href={shortUrl} target='_blank' rel="noopener noreferrer">{shortUrl}</a></p>
-        )}
-      </main>
+
+    <div className='flex flex-col gap-y-10 w-full items-center'>
+      <h1 className='flex mb-5 h1-title'>Shorten&nbsp;
+        <span className='gradient-underline'>URL</span>
+      </h1>
+      <form className='w-full flex flex-col gap-y-10 items-center justify-center'
+        onSubmit={handleSubmit}>
+        <input className='flex text-center 
+        bg-gray-800 text-white placeholder-gray-400 border 
+        border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/70 
+        rounded-md p-3 w-full'
+          type="text"
+          placeholder="Insert an URL"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <button className='transition duration-300 justify-center flex 
+          gradient-button'
+          type="submit"><ScissorsIcon className='size-4 flex flex-col align-middle mr-1 top-1 relative' />Shorten</button>
+      </form>
+      {shortUrl && (
+        <p className='font-semibold flex 
+          md:flex-row flex-col md:items-start items-center justify-center'>URL acortada:&nbsp;
+          <a className='text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400'
+            href={shortUrl} target='_blank'
+            rel="noopener noreferrer">{shortUrl}</a></p>
+      )}
+      {responseError && (
+        <p className='text-red-700 font-semibold opacity-90'>{responseError}</p>
+      )}
     </div>
+
   );
 }
