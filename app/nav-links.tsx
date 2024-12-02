@@ -1,18 +1,20 @@
-'use client'
+import SignOutButton from './components/SignOutButton';
+import { getUser } from './login/actions';
+import LoginLink from './components/LoginLink';
+import HomeLink from './components/HomeLink';
 
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
+export async function NavLinks () {
 
-export function NavLinks () {
-    const pathname = usePathname();
+    const user = await getUser();
 
     return (
-        <nav className='flex flex-row items-end justify-between gap-4 p-3 font-semibold'>
-            <Link className={`link ${pathname === '/' ? 'active' : ''}`}
-                href="/">Home</Link>
+        <nav className='flex flex-row items-center justify-between gap-4 p-3 font-semibold w-[1000px] m-auto'>
 
-            <Link className={`link ${pathname === '/login' ? 'active' : ''}`}
-                href="/login">Login</Link>
+            <HomeLink />
+
+            {user === null ?
+                <LoginLink /> : <SignOutButton />}
+
         </nav>
-    )
+    );
 }

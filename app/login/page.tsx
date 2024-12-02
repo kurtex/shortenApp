@@ -1,33 +1,20 @@
-import { createClient } from "../lib/supabase/supabaseClient/supabaseServerClient";
-import { login, signOut, signUp } from "./actions";
+import { LoginForm } from "../components/LoginForm";
+import { getUser, signOut } from "./actions";
+import SignUp from "../components/SignUpForm";
 
+interface LoginPageProps {
+    searchParams: Record<string, string | string[]>;
+}
 
-export default async function Login () {
+export default async function Login ({ searchParams }: LoginPageProps) {
 
-    const getUser = async () => {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        return user;
-    };
-
+    const type = searchParams['type'];
     const user = await getUser();
 
     if (!user) {
         return (
-            <div className="flex flex-col gap-4">
-                <h1>Welcome</h1>
-                <div className="flex flex-col border">
-                    <p>Create a new account or login</p>
-                    <form>
-                        <label htmlFor="email">Email:</label>
-                        <input name="email" type="email" required />
-                        <label htmlFor="password">Password:</label>
-                        <input name="password" type="password" required />
-                        <button formAction={signUp}>Sign up</button>
-                        <button formAction={login}>Log in</button>
-                    </form>
-                </div>
+            <div className="flex align-middle justify-center h-screen">
+                {type === 'signUp' ? (<SignUp />) : (<LoginForm />)}
             </div>
         );
     }

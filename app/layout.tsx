@@ -20,19 +20,20 @@ export const metadata: Metadata = {
   description: "Create short URLs",
 };
 
-export default function RootLayout ({
+export default async function RootLayout ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-hidden`}>
+        <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]" />
         {/* TODO fix the issue with the margin in the page */}
-        <NavLinks />
-        <div className="flex min-h-screen items-center justify-center font-[family-name:var(--font-geist-sans)]">
-          <main className="flex w-4/5 md:w-9/12 lg:w-1/2 h-96 flex-col max-w-[600px] items-center justify-between py-24 sm:items-center">
+        <div className="flex flex-col items-center justify-center font-[family-name:var(--font-geist-sans)]">
+          <NavLinks />
+          <main className="w-full flex justify-center items-center">
             {children}
           </main>
         </div>

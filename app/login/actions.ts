@@ -7,6 +7,7 @@ import { createClient } from "../lib/supabase/supabaseClient/supabaseServerClien
 export async function login(formData: FormData) {
 	const supabase = await createClient();
 
+	// TODO
 	// type-casting here for convenience
 	// in practice, you should validate your inputs
 	const data = {
@@ -27,6 +28,7 @@ export async function login(formData: FormData) {
 export async function signUp(formData: FormData) {
 	const supabase = await createClient();
 
+	// TODO
 	// type-casting here for convenience
 	// in practice, you should validate your inputs
 	const data = {
@@ -50,25 +52,14 @@ export async function signOut() {
 	await supabase.auth.signOut();
 
 	revalidatePath("/", "layout");
-	redirect("/login");
+	redirect("/");
 }
 
-// import axios from "axios";
+export const getUser = async () => {
+	const supabase = await createClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
 
-// export async function login(formData: FormData) {
-// 	await axios.post("/api/signIn", {
-// 		email: formData.get("email") as string,
-// 		password: formData.get("password") as string,
-// 	});
-// }
-
-// export async function signUp(formData: FormData) {
-// 	await axios.post("/api/signUp", {
-// 		email: formData.get("email") as string,
-// 		password: formData.get("password") as string,
-// 	});
-// }
-
-// export async function signOut() {
-// 	await axios.post("/api/signOut");
-// }
+	return user;
+};
