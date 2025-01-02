@@ -1,27 +1,44 @@
-import { LoginForm } from "../components/LoginForm";
-import { getUser, signOut } from "./actions";
-import SignUp from "../components/SignUpForm";
+'use client';
 
-interface LoginPageProps {
-    searchParams: Record<string, string | string[]>;
-}
+import { useRouter } from "next/navigation";
+import LoginForm from "../components/LoginForm";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default async function Login ({ searchParams }: LoginPageProps) {
 
-    const type = searchParams['type'];
-    const user = await getUser();
+export default function Login () {
 
-    if (!user) {
-        return (
-            <div className="flex align-middle justify-center h-screen">
-                {type === 'signUp' ? (<SignUp />) : (<LoginForm />)}
-            </div>
-        );
-    }
+    const router = useRouter();
+    const [user, setUser] = useState("");
+    const [loading, setLoading] = useState(true);
+
+    const isEmpty = (obj: any) => !obj || Object.keys(obj).length === 0;
+
+    useEffect(() => {
+        const user = async () => {
+            const response = await axios.get('/api/user');
+
+            setUser(response.data);
+        };
+
+        user();
+
+    }, []);
+
+    useEffect(() => {
+        if (!isEmpty(user)) {
+            return router.push('/');
+        }
+
+        if (user !== "") {
+            setLoading(false);
+        }
+    }, [user]);
 
     return (
-        <form>
-            <p>Hello {user.email}</p>
-            <button formAction={signOut}>Sign out</button>
-        </form>);
+        <>
+            {loading && (<p> Loading...</p >)}
+            {!loading && <LoginForm />}
+        </>
+    );
 }

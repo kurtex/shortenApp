@@ -58,3 +58,7 @@ body {
 	hover:scale-105
 	transition-all;
 }
+
+.active {
+	@apply text-white opacity-90;
+}

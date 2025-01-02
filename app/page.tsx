@@ -15,7 +15,7 @@ export default function Home () {
     try {
       const response = await axios.post("/api/shorten", { longUrl: url });
       setShortUrl(response.data.shortUrl);
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage = error.response.data.error;
       console.error("Error acortando la URL", errorMessage);
       setResponseError(errorMessage);
