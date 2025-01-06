@@ -30,7 +30,6 @@ export default async function RootLayout ({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen overflow-hidden`}>
         <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]" />
-        {/* TODO fix the issue with the margin in the page */}
         <div className="flex flex-col items-center justify-center font-[family-name:var(--font-geist-sans)]">
           <NavLinks />
           <main className="w-full flex justify-center items-center">
