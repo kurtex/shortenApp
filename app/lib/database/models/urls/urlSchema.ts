@@ -1,11 +1,10 @@
 /**
- * Supabase Schema
+ * Supabase Schema for the urls table.
  */
 export type UrlSchema = {
 	id?: number;
 	urlCode: string;
 	originalUrl: string;
 	shortUrl: string;
-	isAuthenticated?: boolean;
 	createdAt?: Date;
 };

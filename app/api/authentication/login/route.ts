@@ -1,4 +1,4 @@
-import { login } from "@/app/services/userSvc";
+import { login } from "@/app/serverActions/userActions";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

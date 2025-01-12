@@ -1,4 +1,4 @@
-import { getUser } from "@/app/services/userSvc";
+import { getUser } from "@/app/serverActions/userActions";
 import { NextResponse } from "next/server";
 
 export async function GET() {

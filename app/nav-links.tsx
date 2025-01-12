@@ -1,5 +1,5 @@
 import SignOutButton from './components/SignOutButton';
-import { getUser } from './services/userSvc';
+import { getUser } from './serverActions/userActions';
 import LoginLink from './components/LoginLink';
 import HomeLink from './components/HomeLink';
 

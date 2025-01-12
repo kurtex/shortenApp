@@ -1,8 +1,9 @@
+import { getUser } from "@/app/serverActions/userActions";
 import {
-	deleteExpiredUrls,
 	findByOriginalUrl,
-	insertNewShortUrl,
-} from "../../services/urlSvc";
+	addNewShortUrl,
+	assignUrlToAuthenticatedUser,
+} from "../../serverActions/urlActions";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 
@@ -27,10 +28,21 @@ export async function POST(request: Request) {
 		);
 	}
 
+	const { user, error: userError } = await getUser();
+
+	if (userError) {
+		console.error(userError.message);
+
+		return NextResponse.json(
+			{ error: "Error en el servidor" },
+			{ status: 500 }
+		);
+	}
+
 	if (data?.length !== 0) {
 		return NextResponse.json(data[0]);
 	} else {
-		const { data, error } = await insertNewShortUrl({
+		const { data, error } = await addNewShortUrl({
 			originalUrl,
 			shortUrl,
 			urlCode,
@@ -45,10 +57,22 @@ export async function POST(request: Request) {
 			);
 		}
 
+		if (user) {
+			const { error: userUrlError } = await assignUrlToAuthenticatedUser(
+				data[0].id,
+				user.id
+			);
+
+			if (userUrlError) {
+				console.error(userUrlError.message);
+
+				return NextResponse.json(
+					{ error: "Error en el servidor" },
+					{ status: 500 }
+				);
+			}
+		}
+
 		return NextResponse.json(data[0]);
 	}
-}
-
-export async function DELETE() {
-	await deleteExpiredUrls();
 }

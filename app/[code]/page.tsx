@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { findByUrlCode } from "../services/urlSvc";
+import { findByUrlCode } from "../serverActions/urlActions";
 
 
 

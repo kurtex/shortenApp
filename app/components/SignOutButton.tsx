@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "../services/userSvc";
+import { signOut } from "../serverActions/userActions";
 
 const SignOutButton = () => {
 

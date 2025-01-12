@@ -1,5 +1,5 @@
 import FormWrapper from "@/app/components/FormWrapper";
-import { updateUserPassword } from "@/app/services/userSvc";
+import { updateUserPassword } from "@/app/serverActions/userActions";
 
 
 export default async function UpdatePassword () {

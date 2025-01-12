@@ -1,6 +1,6 @@
 import SignOutButton from "./SignOutButton";
 import Link from "next/link";
-import { getUser } from "../services/userSvc";
+import { getUser } from "../serverActions/userActions";
 import { useEffect } from "react";
 
 interface LogginButtonProps {

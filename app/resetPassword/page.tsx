@@ -1,7 +1,7 @@
 'use server';
 
 import FormWrapper from "../components/FormWrapper";
-import { resetPasswordForEmail } from "../services/userSvc";
+import { resetPasswordForEmail } from "../serverActions/userActions";
 
 export default async function ResetPassword () {
 
