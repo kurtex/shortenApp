@@ -1,9 +1,15 @@
 'use server';
 
+
+import { redirect } from "next/navigation";
 import FormWrapper from "../components/FormWrapper";
-import { resetPasswordForEmail } from "../serverActions/userActions";
+import { getUser, resetPasswordForEmail } from "../serverActions/userActions";
 
 export default async function ResetPassword () {
+
+    if (getUser() !== null) {
+        redirect('/');
+    }
 
     return (
         <FormWrapper title="Reset Password">

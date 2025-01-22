@@ -24,14 +24,13 @@ const EXPIRATION_TIME_HOURS = 1;
  *
  * @returns {Promise<void>} A promise that resolves when the operation is complete.
  */
-export async function deleteExpiredUrls() {
+export async function deleteExpiredUrls(token: string) {
 	const expirationTime = new Date();
-	const supabase = await createClient();
+	const supabase = await createClient(token);
 
 	// URLs more than 1 hour old
 	expirationTime.setHours(expirationTime.getHours() - EXPIRATION_TIME_HOURS);
 
-	// Remove URLs that are not associated with authenticated users and have expired
 	const { data: userUrlsData, error: userUrlsError } = await supabase
 		.from("usersUrls")
 		.select("urlId");
@@ -42,6 +41,7 @@ export async function deleteExpiredUrls() {
 
 	const userUrlIds = userUrlsData.map((userUrl) => userUrl.urlId);
 
+	// Remove URLs that are not associated with authenticated users and have expired
 	const { data, error } = await supabase
 		.from("urls")
 		.delete()

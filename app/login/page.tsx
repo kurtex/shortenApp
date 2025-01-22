@@ -3,37 +3,21 @@
 import { useRouter } from "next/navigation";
 import LoginForm from "../components/LoginForm";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import useRedirectUserLogged from "../customHooks/useRedirectUserLogged";
 
 
 export default function Login () {
 
-    const router = useRouter();
-    const [user, setUser] = useState("");
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
-    const isEmpty = (obj: any) => !obj || Object.keys(obj).length === 0;
+    useRedirectUserLogged(router);
 
     useEffect(() => {
-        const user = async () => {
-            const response = await axios.get('/api/user');
 
-            setUser(response.data);
-        };
-
-        user();
+        setLoading(false);
 
     }, []);
-
-    useEffect(() => {
-        if (!isEmpty(user)) {
-            return router.push('/');
-        }
-
-        if (user !== "") {
-            setLoading(false);
-        }
-    }, [user]);
 
     return (
         <>

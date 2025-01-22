@@ -15,5 +15,12 @@ export async function POST(request: Request) {
 		return NextResponse.json(error.message, { status: error.status });
 	}
 
+	if (!user || Object.keys(user.user_metadata).length === 0) {
+		return NextResponse.json(
+			{ error: "Error en el servidor" },
+			{ status: 500 }
+		);
+	}
+
 	return NextResponse.json(user, { status: 200 });
 }

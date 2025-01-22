@@ -16,9 +16,14 @@ export default function Home () {
       const response = await axios.post("/api/shorten", { longUrl: url });
       setShortUrl(response.data.shortUrl);
     } catch (error: unknown) {
-      const errorMessage = error.response.data.error;
-      console.error("Error acortando la URL", errorMessage);
-      setResponseError(errorMessage);
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = error.response.data.error;
+        console.error("Error acortando la URL", errorMessage);
+        setResponseError(errorMessage);
+      } else {
+        console.error("Unknown error", error);
+        setResponseError("An unknown error occurred");
+      }
     }
   };
 

@@ -28,8 +28,10 @@ const SignUpForm = () => {
             }
 
         } catch (error: unknown) {
-            const errorMessage = error.response.data.error;
-            setErrorMessage(errorMessage);
+            if (axios.isAxiosError(error) && error.response) {
+                const errorMessage = error.response.data.error;
+                setErrorMessage(errorMessage);
+            }
         }
     };
 

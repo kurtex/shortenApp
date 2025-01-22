@@ -27,9 +27,13 @@ const LoginForm = () => {
             }
 
         } catch (error: unknown) {
-            const errorMessage = error.response.data.error;
-            console.error("Error logando al usuario", errorMessage);
-            setErrorMessage(errorMessage);
+            if (axios.isAxiosError(error) && error.response) {
+                const errorMessage = error.response.data.error;
+                console.error("Error logando al usuario", errorMessage);
+                setErrorMessage(errorMessage);
+            } else {
+                console.error("Unexpected error", error);
+            }
         }
     };
 

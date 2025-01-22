@@ -1,7 +1,6 @@
 import SignOutButton from "./SignOutButton";
 import Link from "next/link";
 import { getUser } from "../serverActions/userActions";
-import { useEffect } from "react";
 
 interface LogginButtonProps {
     pathname: string;
@@ -9,9 +8,6 @@ interface LogginButtonProps {
 
 export async function LoginButton ({ pathname }: LogginButtonProps) {
 
-    useEffect(() => {
-
-    }, []);
     const user = await getUser();
 
     return (
