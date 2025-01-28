@@ -8,7 +8,8 @@ export async function NavLinks () {
     const data = await getUser();
 
     return (
-        <nav className='flex flex-row items-center justify-between gap-4 p-3 font-semibold w-[1000px] m-auto'>
+        <nav className='flex flex-row items-center justify-between 
+        gap-4 p-3 font-semibold w-full sm:w-[1000px] m-auto'>
 
             <HomeLink />
 

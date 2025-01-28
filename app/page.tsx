@@ -28,7 +28,7 @@ export default function Home () {
   };
 
   return (
-    <div className='flex flex-col gap-y-10 w-[760px] items-center justify-center m-auto h-screen'>
+    <div className='flex flex-col gap-y-10 w-11/12 sm:w-[760px] items-center justify-center m-auto h-screen'>
       <h1 className='flex mb-5 h1-title'>Shorten&nbsp;
         <span className='gradient-underline'>URL</span>
       </h1>

@@ -7,7 +7,7 @@ import { getUser, resetPasswordForEmail } from "../serverActions/userActions";
 
 export default async function ResetPassword () {
 
-    if (getUser() !== null) {
+    if ((await getUser()).user !== null) {
         redirect('/');
     }
 

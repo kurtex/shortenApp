@@ -77,6 +77,6 @@ body {
 	dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-primary-800;
 }
 
-.active {
+a {
 	@apply text-white opacity-90;
 }
