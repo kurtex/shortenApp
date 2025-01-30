@@ -28,16 +28,7 @@ export async function POST(request: Request) {
 		);
 	}
 
-	const { user, error: userError } = await getUser();
-
-	if (userError) {
-		console.error(userError.message);
-
-		return NextResponse.json(
-			{ error: "Error en el servidor" },
-			{ status: 500 }
-		);
-	}
+	const { user } = await getUser();
 
 	if (data?.length !== 0) {
 		return NextResponse.json(data[0]);
