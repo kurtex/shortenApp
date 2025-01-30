@@ -5,16 +5,24 @@ import axios from 'axios';
 import ScissorsIcon from './components/icons/ScissorsIcon';
 
 
+/**
+ * ShortUrlData is the data returned by the server when a URL is shortened.
+ */
+interface ShortUrlData {
+  urlCode: string;
+  shortUrl: string;
+}
+
 export default function Home () {
   const [url, setUrl] = useState("");
-  const [shortUrl, setShortUrl] = useState("");
+  const [shortUrlData, setShortUrlData] = useState<ShortUrlData>();
   const [responseError, setResponseError] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/shorten", { longUrl: url });
-      setShortUrl(response.data.shortUrl);
+      const response = await axios.post("/api/shorten", { longUrl: url }, { withCredentials: true });
+      setShortUrlData(response.data);
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         const errorMessage = error.response.data.error;
@@ -47,12 +55,12 @@ export default function Home () {
           gradient-button'
           type="submit"><ScissorsIcon className='size-4 flex flex-col align-middle mr-1 top-1 relative' />Shorten</button>
       </form>
-      {shortUrl && (
+      {shortUrlData?.shortUrl && (
         <p className='font-semibold flex 
           md:flex-row flex-col md:items-start items-center justify-center'>URL acortada:&nbsp;
           <a className='text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400'
-            href={shortUrl} target='_blank'
-            rel="noopener noreferrer">{shortUrl}</a></p>
+            href={shortUrlData.urlCode} target='_blank'
+            rel="noopener noreferrer">{shortUrlData.shortUrl}</a></p>
       )}
       {responseError && (
         <p className='text-red-700 font-semibold opacity-90'>{responseError}</p>
